@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: ${APP_SETTINGS__DB__USER}
+      POSTGRES_PASSWORD: ${APP_SETTINGS__DB__PASSWORD}
+      POSTGRES_DB: ${APP_SETTINGS__DB__NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -r /var/run/postgresql/ready ] || ( pg_isready && touch /var/run/postgresql/ready)" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  database:

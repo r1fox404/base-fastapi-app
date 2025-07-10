@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession
 )
 
-from core import settings
-from core.loggers import db_log
+from application.core.settings import settings
+from application.core.loggers import db_log
 
 
 class DatabaseHelper:
