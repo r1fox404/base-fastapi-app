@@ -7,14 +7,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from application.database import db_helper
 from application.database.models import User
-from application.database.crud import get_user
 from application.database.crud import get_users
 from application.database.crud import update_user
 from application.database.crud import create_user
 from application.database.crud import delete_user
 from application.database.dependencies import get_user_by_telegram_id
 from application.database.schemas import (
-	UserSchema, UserSchemaCreate, UserSchemaUpdate)
+	UserSchema,
+	UserSchemaCreate,
+	UserSchemaUpdate)
 
 
 router = APIRouter(tags=["Users"])
@@ -55,7 +56,7 @@ async def get_all(
 
 @router.patch(
 	"/update/{telegram_id}",
-	response_model=UserSchemaUpdate,
+	response_model=UserSchema,
 	status_code=status.HTTP_200_OK)
 async def update(
 	session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
@@ -77,5 +78,4 @@ async def delete(
 ):
 	return await delete_user(
 		session=session,
-		user=user
-	)
+		user=user)

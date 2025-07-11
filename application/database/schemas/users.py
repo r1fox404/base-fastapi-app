@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import ConfigDict
 
-from application.core.enums import UserStates, UserRole
+from application.core.enums import UserStateType, UserRoleType
 
 
 class UserSchemaBase(BaseModel):
@@ -15,8 +15,8 @@ class UserSchemaBase(BaseModel):
 	last_name: Optional[str] = None
 	phone_number: Optional[str] = None
 
-	state: UserStates = UserStates("REGISTERED")
-	role: UserRole = UserRole("USER")
+	state: UserStateType = UserStateType.REGISTERED
+	role: UserRoleType = UserRoleType.USER
 	blocked_by: Optional[int] = None
 	block_reason: Optional[str] = None
 
@@ -30,13 +30,14 @@ class UserSchemaUpdate(UserSchemaCreate):
 	first_name: Optional[str] = None
 	last_name: Optional[str] = None
 	phone_number: Optional[str] = None
-	state: Optional[UserStates] = None
+	state: Optional[UserStateType] = None
 	blocked_by: Optional[int] = None
 	block_reason: Optional[str] = None
-	role: Optional[UserRole] = None
+	role: Optional[UserRoleType] = None
 
 
 class UserSchema(UserSchemaBase):
 	model_config = ConfigDict(from_attributes=True)
 
 	created_at: datetime
+	updated_at: Optional[datetime]

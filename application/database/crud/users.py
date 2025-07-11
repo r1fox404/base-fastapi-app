@@ -3,13 +3,10 @@ from typing import Sequence
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 from application.database.models import User
 from application.database.schemas import (
-	UserSchema,
 	UserSchemaCreate,
-	UserSchemaUpdate,
-)
+	UserSchemaUpdate)
 
 
 async def create_user(
