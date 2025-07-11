@@ -1,7 +1,7 @@
-import logging
+from typing import Dict
 from pathlib import Path
-from typing import Dict, Literal
-from pydantic import BaseModel, PostgresDsn
+
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -16,6 +16,8 @@ class RunConfig(BaseModel):
 class ApiV1Config(BaseModel):
     prefix: str = "/v1"
     users: str = "/users"
+    events: str = "/events"
+    contracts: str = "/contracts"
 
 
 class ApiConfig(BaseModel):
@@ -41,11 +43,11 @@ class DatabaseConfig(BaseModel):
         return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
     
     naming_convention: Dict[str, str] = {
+        "pk": "pk_%(table_name)s",
         "ix": "ix_%(column_0_label)s",
         "uq": "uq_%(table_name)s_%(column_0_N_name)s",
         "ck": "ck_%(table_name)s_%(constraint_name)s",
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-        "pk": "pk_%(table_name)s",
     }
 
 
@@ -56,9 +58,9 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
         env_prefix="APP_SETTINGS__"
     )
-    db: DatabaseConfig = DatabaseConfig()
     api: ApiConfig = ApiConfig()
     run: RunConfig = RunConfig()
+    db: DatabaseConfig = DatabaseConfig()
 
 
 settings = Settings() # type: ignore
